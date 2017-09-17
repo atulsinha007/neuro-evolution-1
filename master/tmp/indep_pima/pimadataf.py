@@ -11,7 +11,7 @@ def standardize_dataset(traindata, means, stdevs):
             if stdevs[i]:
                 row[i]/=stdevs[i]
 rng=np.random
-rng.seed(1234)
+rng.seed(1234)##see this doesn't change through main
 pimadata=np.loadtxt("pima_dataset.csv", delimiter=',')
 
 rng.shuffle(pimadata)
@@ -85,7 +85,7 @@ def give_datainshared():
     test_setx=pimadata[431:538,:8]
     test_sety=pimadata[431:538,8:]
     test_sety=test_sety.reshape((test_sety.shape[0],))
-    print(rest_sety.reshape((rest_sety.shape[0],)))
+    #print(rest_sety.reshape((rest_sety.shape[0],)))
     srest_setx,srest_sety=shared_dataset((rest_setx,rest_sety))
     stest_setx,stest_sety=shared_dataset((test_setx,test_sety))
     return ((srest_setx,srest_sety),(stest_setx,stest_sety))

@@ -99,7 +99,7 @@ class Neterr:
 		
 		return er_arr
 
-	def modify_thru_backprop(self,popul,epochs=100,learning_rate=0.01):
+	def modify_thru_backprop(self,popul,epochs=100,learning_rate=0.01,L1_reg=0.0,L2_reg=0.0001):
 		
 		y=T.ivector('y')
 		lis=[]
@@ -111,8 +111,12 @@ class Neterr:
 
 			fullnet=popul.net_dict[hid_nodes]
 			params=fullnet.params
-			cost=fullnet.cost_func(y)
-			
+			cost=(
+				fullnet.cost_func(y)
+				+fullnet.L1*L1_reg
+				+fullnet.L2_sqr*L2_reg
+			)
+			#print("hey")
 			gparams=[T.grad(cost,j) for j in params]
 			updates = [
 					    (param, param - learning_rate * gparam)
@@ -133,9 +137,9 @@ class Neterr:
 
 				    p=train_model()
 				    
-				    print("in back  training",i,hid_nodes,p)
+				    #print("in back  training",i,hid_nodes,p)
 				    
-				print("here sub testing",test_model())
+				print("here sub testing",hid_nodes, test_model())
 				lis.append(fullnet.turn_weights_into_chromosome())
 
 		"""lis=[]
