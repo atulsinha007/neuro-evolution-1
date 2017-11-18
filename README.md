@@ -1,7 +1,7 @@
 # Multi-Objective Neuro Evolution
 
-[![Build Status](https://raw.githubusercontent.com/dwyl/repo-badges/master/highresPNGs/build-passing.png)] 
-[![Trello](https://d2k1ftgv7pobq7.cloudfront.net/meta/u/res/images/brand-assets/Logos/0099ec3754bf473d2bbf317204ab6fea/trello-logo-blue.png)]
+<img src="https://raw.githubusercontent.com/dwyl/repo-badges/master/highresPNGs/build-passing.png" height="50">
+<img src="https://d2k1ftgv7pobq7.cloudfront.net/meta/u/res/images/brand-assets/Logos/0099ec3754bf473d2bbf317204ab6fea/trello-logo-blue.png" height="50">
 
 ## Abstract
 
