@@ -15,7 +15,7 @@ from chromosome import Chromosome, crossover
 n_hidden = 100
 indim = 8
 outdim = 1
-creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, -1.0, -1.0))
+creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, -1.0, 1.0))
 creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
 
 toolbox = base.Toolbox()
@@ -27,9 +27,9 @@ def minimize(individual):
 	neg_log_likelihood_val = objectives.give_neg_log_likelihood(outputarr, network_obj.resty)
 	mean_square_error_val = objectives.give_mse(outputarr, network_obj.resty)
 	false_positve_rat = objectives.give_false_positive_ratio(outputarr, network_obj.resty)
-	false_negative_rat = objectives.give_false_negative_ratio(outputarr, network_obj.resty)
+	true_positive_rat = objectives.give_true_positive_ratio(outputarr, network_obj.resty)
 
-	return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
+	return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, true_positive_rat
 
 def mycross(ind1, ind2, gen_no):
 	child1 = crossover(ind1, ind2, gen_no, indim, outdim)

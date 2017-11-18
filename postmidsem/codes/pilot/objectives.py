@@ -43,6 +43,19 @@ def give_false_negative_ratio(arr, oneDarr):
 	dummer = np.sum([(ar1[i])*(oneDarr[i]) for i in range(ar1.shape[0])])
 	return summer/(summer+dummer)
 
+def give_true_positive_ratio(arr, oneDarr):
+    if arr.shape[1] > 2:
+        print("true_positive is not appropriate objective, change objective function in Population.py")
+        exit(1)
+    if arr.shape[1]==1:
+        ar1 = np.where(arr>0.5,1,0)
+        ar1 = np.ravel(ar1)
+    else:
+        ar1 = np.argmax(arr, axis = 1)
+    summer = np.sum([(ar1[i])*(oneDarr[i]) for i in range(oneDarr.shape[0])])
+    dummer = np.sum([(1-ar1[i])*(oneDarr[i]) for i in range(ar1.shape[0])])
+    return summer/(summer+dummer)
+
 def givesumar(size):
 	ar = [0]
 	for i in range(1, size + 1):
