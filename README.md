@@ -1,5 +1,8 @@
 # Multi-Objective Neuro Evolution
 
+[![Build Status](https://raw.githubusercontent.com/dwyl/repo-badges/master/highresPNGs/build-passing.png)] 
+[![Trello](https://d2k1ftgv7pobq7.cloudfront.net/meta/u/res/images/brand-assets/Logos/0099ec3754bf473d2bbf317204ab6fea/trello-logo-blue.png)]
+
 ## Abstract
 
 Neural network as a technology has grown immensely and its multi-layered feed-forward properties make networks particularly suited to complex pattern classification problems. However, their application to real world problems show lack of a training algorithm to find optimal weights.
