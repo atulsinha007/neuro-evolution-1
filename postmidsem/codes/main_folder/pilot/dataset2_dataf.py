@@ -126,3 +126,4 @@ def main():
 	print( give_target_data()[1][0][:10])
 if __name__=="__main__":
 	main()
+#git config --global http.proxy https://172.31.1.5:8080/

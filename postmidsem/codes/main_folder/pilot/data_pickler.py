@@ -49,10 +49,12 @@ def find_features_dslr( file_st ):
 def make_data_from_image_amazon( stri, dir_lis ):
 	lislis = []
 	label_lis = []
+
 	for dirnum, dir_st in enumerate(dir_lis):
 		new_dir_stri =   stri + dir_st +'/'
 		file_lis = list(files( new_dir_stri))
 		lis = []
+		lis_of_number.append( len(file_lis))
 		print( file_lis)
 		
 		for file_st in file_lis:
@@ -65,15 +67,20 @@ def make_data_from_image_amazon( stri, dir_lis ):
 	twod_ar = np.array(lislis, dtype = 'float64')
 	assert( twod_ar.shape[0] == oned_ar.shape[0])
 	return twod_ar,oned_ar
+lis_of_number = [ 0 ]
+lis_of_cardinal = []
 def make_data_from_image_dslr( stri, dir_lis ):
 	lislis = []
 	label_lis = []
+	global lis_of_number, lis_of_cardinal
+	sum = 0
 	for dirnum, dir_st in enumerate(dir_lis):
 		new_dir_stri =   stri + dir_st +'/'
 		file_lis = list(files( new_dir_stri))
 		lis = []
 		print( file_lis)
-		
+		lis_of_cardinal.append( len(file_lis) )
+		lis_of_number.append(lis_of_number[-1] + len(file_lis))
 		for file_st in file_lis:
 
 			fd_ar = find_features_dslr( new_dir_stri + file_st)
@@ -94,11 +101,35 @@ def make_source_data():
 	fs.close()
 
 
+def make_test_ar_dslr( tar_tup ):
+	global lis_of_number
+	tar_arr = tar_tup[0]
+	label_arr = tar_tup[1]
+	lis_to_return = []
+
+	for i in range(len(lis_of_number)-1):
+		new_arr= tar_arr[ lis_of_number[i]:lis_of_number[i+1], :]
+		new_label_arr = label_arr[ lis_of_number[i]:lis_of_number[i+1] ]
+		new_rest_arr = np.concatenate((tar_arr[:lis_of_number[i], :], tar_arr[lis_of_number[i+1]:, :])
+									  ,axis = 0)
+		new_rest_label = np.concatenate((tar_arr[:lis_of_number[i]], tar_arr[lis_of_number[i+1]:])
+									  ,axis = 0)
+		assert (new_rest_label.shape[0] == new_rest_arr.shape[0])
+		n = new_rest_label.shape[0]
+		k = new_arr.shape[0]
+		random_index_lis = random.sample([i for i in range(n)], k)
+		new_arr = np.concatenate( (new_arr, new_rest_arr[random_index_lis]), axis = 0)
+		new_label_arr = np.concatenate((new_label_arr, new_rest_label[random_index_lis]), axis=0)
+		new_tup = new_arr, new_label_arr
+		lis_to_return.append( new_tup)
+
+lis_of_arr = []
 def make_target_data():
 	global fstri, dir_lis
 	stri = fstri + 'dslr/images/'
-	
+	global lis_of_arr
 	tup = make_data_from_image_dslr( stri, dir_lis )
+	lis_of_arr = make_test_ar_dslr(tup)
 	fs = open( pstri+"pickle_jar/tar_data.pickle", "wb")
 	pickle.dump( tup , fs)
 	fs.close()
