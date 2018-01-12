@@ -283,6 +283,7 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
     # Begin the generational process
     # print(pop.__dir__())
     mis_class_str = ""
+    filex = open("Epsilon.txt", "a")
     for gen in range(1, NGEN):
         pareto_front=fronts[0]
         # Vary the population
@@ -299,7 +300,8 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
         #print(sum)
         #print(len(pareto_front))    
         summ = summ/len(pareto_front)   
-        mis_class_str +=  (str(summ) + ' ')
+        mis_class_str +=  str(gen) + " \t" + (str(summ) + "\n")
+        
         print("average misclassification in this gen is " + str(summ))
         print("here in gen no.", gen)
         offspring = tools.selTournamentDCD(pop_tar, len(pop_tar))
@@ -359,7 +361,8 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
         # print(len(pop))
         # file_ob.close()
     #print(stri)
-
+    filex.write( mis_class_str  )
+    filex.close()
 
     ##from here starting target
     return pop_tar, logbook
@@ -465,7 +468,7 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 
 
 if __name__ == "__main__":
-    test_it_with_bp(play = 1, NGEN = 100, MU = 4*25, play_with_whole_pareto = 1)
+    test_it_with_bp(play = 1, NGEN = 3, MU = 4*25, play_with_whole_pareto = 1)
 
     # file_ob.write( "test on one with min validation error " + str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))))
 
