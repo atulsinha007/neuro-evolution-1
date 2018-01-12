@@ -59,9 +59,10 @@ class Neterr:
         if change_to_target != 100:
             testy = test_set[1]
         #print("one time", resty.shape, testy.shape, self.restx.shape)
-
-        self.resty = np.ravel(resty)
-        self.testy = np.ravel(testy)
+        self.resty = np.ravel(resty)    
+        if change_to_target != 100:
+            
+            self.testy = np.ravel(testy)
         self.rest_setx = tf.Variable(initial_value = self.restx, name='rest_setx',
                                      dtype=tf.float32)
         self.rest_sety = tf.Variable(initial_value = self.resty, name='rest_sety', dtype=tf.int32)
@@ -74,7 +75,7 @@ class Neterr:
         if change_to_target != 100:
             self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
         else:
-            self.test_sety = tf.Variable(initial_value=test_set_tup[0][2], name='test_sety', dtype=tf.int32)
+            self.test_sety = tf.Variable(initial_value=test_set_tup[2][1], name='test_sety', dtype=tf.int32)
 
         #self.inputarr = inputarr
         self.inputarr = self.restx

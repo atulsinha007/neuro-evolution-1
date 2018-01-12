@@ -135,7 +135,7 @@ def find_indices_dslr( tup ):
 		if ( prev_item != target_label_lis_num_arr[i]):
 			lis_of_cardinal += [ctr]
 			ctr = 0
-			print("prev_item", prev_item)
+			# print("prev_item", prev_item)
 			prev_item = target_label_lis_num_arr[i]
 
 		ctr += 1

@@ -22,7 +22,7 @@ epsilon_gen = 60
 epsilon = 0.8
 network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target = 0, rng = random)
 
-network_obj_tar = Neterr(indim, outdim, n_hidden,change_to_target = 1, rng = random)
+network_obj_tar = Neterr(indim, outdim, n_hidden,change_to_target = 100, rng = random)
 #creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
 creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.01))
 creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
@@ -469,12 +469,12 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 
     
 
-    print("\ntest: test on one with min validation error", network_obj_tar.test_err(min(pop, key=lambda x: x.fitness.values[1])))
-    tup = network_obj_tar.test_on_pareto_patch_correctone(pareto_front)
+    # print("\ntest: test on one with min validation error", network_obj_tar.test_err(min(pop, key=lambda x: x.fitness.values[1])))
+    tup = network_obj_tar.test_on_pareto_patch_correctone_modified(pareto_front)
 
     print("\n test: avg on sampled pareto set", tup)
 
-    st = str(network_obj_tar.test_err(min(pop, key=lambda x: x.fitness.values[1]))) + " " + str(tup) 
+    st = str(tup) 
     print(note_this_string(st, stringh))
 
 
