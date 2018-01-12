@@ -123,10 +123,10 @@ def give_target_data_just_src_just_tar():
 	assert( test_sety.shape == (13,1))'''
 	return ((rest_setx,rest_sety),(test_setx,test_sety))
 
-def find_indices_dslr( target_label_lis_num_arr ):
+def find_indices_dslr( tup ):
 	lis_of_number = [0]
 	lis_of_cardinal = []
-
+	target_label_lis_num_arr = tup[1]
 	#global lis_of_number, lis_of_cardinal
 
 	prev_item = target_label_lis_num_arr[0]
@@ -139,13 +139,22 @@ def find_indices_dslr( target_label_lis_num_arr ):
 			prev_item = target_label_lis_num_arr[i]
 
 		ctr += 1
+	#print("prev_item", prev_item)
 	lis_of_cardinal += [ctr]
 	assert( len(lis_of_cardinal ) == 5)
-	lis_of_number = [lis_of_number[-1]+lis_of_cardinal[i] for i in range(len(lis_of_cardinal)) ]
+	#lis_of_number = [lis_of_number[-1]+lis_of_cardinal[i] for i in range(len(lis_of_cardinal)) ]
+	sumi = 0
+	for i in range( len(lis_of_cardinal)):
+		sumi += lis_of_cardinal[i]
+		lis_of_number.append(sumi)
+	#print(lis_of_number)
+	assert ( len(lis_of_number) == 6)
+	#print(lis_of_cardinal)
 	return lis_of_number, lis_of_cardinal
 def give_rest_and_test( tup, indlow, indhigh):
 	prev_item = tup[1][indlow]
-	assert( tup[1][indlow: indhigh].any() == prev_item)
+
+	#assert( tup[1][indlow: indhigh].all() == prev_item)
 	arr = tup[0][indlow:indhigh]
 	label_arr = tup[1][ indlow: indhigh]
 	pind = arr.shape[0]*3//4
@@ -180,7 +189,6 @@ def make_test_ar_dslr(  tar_tup ):
 	random.shuffle(ran_lis)
 	tar_rest_arr_to_return = tar_rest_arr_to_return[ran_lis]
 	tar_rest_label_to_return = tar_rest_label_to_return[ ran_lis ]
-
 	test_arr = np.array( test_arr, dtype = "float64")
 	test_label = np.array( test_label, dtype = "float64")
 	test_lis_of_number, test_lis_of_cardinal = find_indices_dslr( (test_arr, test_label))
@@ -199,16 +207,16 @@ def make_test_ar_dslr(  tar_tup ):
 		random.shuffle(ran_lis)
 		assert( final_arr.shape[0] == final_label.shape[0])
 		assert( final_arr.shape[0] == 2*major_arr.shape[0])
-		ass_lis1 = [0 for i in range(final_label.shape[0]) if final_label != major_label[0]]
-		ass_lis2 = [1 for i in range(final_label.shape[0]) if final_label == major_label[0]]
+		ass_lis1 = [0 for i in range(final_label.shape[0]) if final_label[i] != major_label[0]]
+		ass_lis2 = [1 for i in range(final_label.shape[0]) if final_label[i] == major_label[0]]
 		assert( len(ass_lis1) == len( ass_lis2))
 		final_arr = final_arr[ran_lis]
 		final_label = final_label[ran_lis]
 		two_tup_lis.append( (final_arr, final_label))
 	return [(tar_rest_arr_to_return, tar_rest_label_to_return), two_tup_lis]
 def main():
-	print( give_source_data()[0][0][:10])
-	print( give_target_data()[1][0][:10])
+
+	print( make_test_ar_dslr( (target_feat_mat, target_label_lis_num_arr)))
 if __name__=="__main__":
 	main()
 #git config --global http.proxy https://172.31.1.5:8080/
