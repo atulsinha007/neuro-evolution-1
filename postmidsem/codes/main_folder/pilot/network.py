@@ -47,6 +47,7 @@ class Neterr:
             rest_set, test_set = dataset2_dataf.give_target_data()
         elif change_to_target == 2:
             rest_set, test_set = dataset2_dataf.give_target_data_just_src_just_tar()
+        elif change_to_target
         # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
         self.restx = rest_set[0]
         resty = rest_set[1]
@@ -202,7 +203,8 @@ class Neterr:
 
         to_find_mean_arr = np.where( difference != 0, 1, 0 )
         self.inputarr = temp
-        return np.mean(to_find_mean_arr) 
+        return np.mean(to_find_mean_arr)
+
 
 
 
