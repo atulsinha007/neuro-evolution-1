@@ -135,23 +135,31 @@ def find_indices_dslr( target_label_lis_num_arr ):
 		if ( prev_item != target_label_lis_num_arr[i]):
 			lis_of_cardinal += [ctr]
 			ctr = 0
+			print("prev_item", prev_item)
 			prev_item = target_label_lis_num_arr[i]
+
 		ctr += 1
 	lis_of_cardinal += [ctr]
+	assert( len(lis_of_cardinal ) == 5)
 	lis_of_number = [lis_of_number[-1]+lis_of_cardinal[i] for i in range(len(lis_of_cardinal)) ]
 	return lis_of_number, lis_of_cardinal
 def give_rest_and_test( tup, indlow, indhigh):
+	prev_item = tup[1][indlow]
+	assert( tup[1][indlow: indhigh].any() == prev_item)
 	arr = tup[0][indlow:indhigh]
 	label_arr = tup[1][ indlow: indhigh]
 	pind = arr.shape[0]*3//4
 	rest_arr = arr[:pind, :]
 	rest_label = label_arr[:pind]
+	assert( rest_arr.shape[0] == rest_label.shape[0])
 	test_arr = arr[pind:, :]
 	test_label = label_arr[pind:]
+	assert (test_arr.shape[0] == test_label.shape[0])
 	return (rest_arr, rest_label), (test_arr, test_label)
 def make_test_ar_dslr(  tar_tup ):
 
 	lis_of_number, lis_of_cardinal = find_indices_dslr( tar_tup )
+	assert (lis_of_number[-1] == tar_tup[0].shape[0])
 	#tar_arr = tar_tup[0]
 	#label_arr = tar_tup[1]
 	#lis_to_return = []
@@ -189,6 +197,11 @@ def make_test_ar_dslr(  tar_tup ):
 		final_label = np.concatenate(( major_label, minor_label))
 		ran_lis = [i for i in range(final_arr.shape[0])]
 		random.shuffle(ran_lis)
+		assert( final_arr.shape[0] == final_label.shape[0])
+		assert( final_arr.shape[0] == 2*major_arr.shape[0])
+		ass_lis1 = [0 for i in range(final_label.shape[0]) if final_label != major_label[0]]
+		ass_lis2 = [1 for i in range(final_label.shape[0]) if final_label == major_label[0]]
+		assert( len(ass_lis1) == len( ass_lis2))
 		final_arr = final_arr[ran_lis]
 		final_label = final_label[ran_lis]
 		two_tup_lis.append( (final_arr, final_label))
