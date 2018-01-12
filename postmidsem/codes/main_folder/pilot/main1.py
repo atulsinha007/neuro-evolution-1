@@ -18,12 +18,13 @@ from chromosome import Chromosome, crossover
 n_hidden = 100
 indim = 32
 outdim = 5
-
+epsilon_gen = 1
+epsilon = 0.8
 network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target = 0, rng = random)
 
 network_obj_tar = Neterr(indim, outdim, n_hidden,change_to_target = 1, rng = random)
 #creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
-creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0))
+creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.01))
 creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
 print("here network object created")
 toolbox = base.Toolbox()
@@ -37,7 +38,7 @@ def minimize_src(individual):
 
         #anyways not using these as you can see in 'creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))'
     #return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
-    return neg_log_likelihood_val, mean_square_error_val
+    return neg_log_likelihood_val, mean_square_error_val, 0.0
 def minimize_tar(individual):
     outputarr = network_obj_tar.feedforward_ne(individual)
 
@@ -293,11 +294,8 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
             #print(par)
             ob1, ob2 ,ob3= minimize_tar_approach2(par)
             summ += ob3
-            #print("ob3")
-            #print(ob3)
-            #print(ob2)
-        #print("hello")
-        #print(sum)
+            
+        
         #print(len(pareto_front))    
         summ = summ/len(pareto_front)   
         mis_class_str +=  str(gen) + " \t" + (str(summ) + "\n")
@@ -343,6 +341,14 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
         fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
         for ind, fit in zip(invalid_ind, fitnesses):
             ind.fitness.values = fit
+
+
+        if gen >= epsilon_gen:
+            for par in pareto_front:
+                if( par.fitness.values[2] > epsilon):
+                    # par.fitness.values[0] = np.inf
+                    # par.fitness.values[1] = np.inf
+                    par.fitness.values = (np.inf, np.inf, par.fitness.values[2])
 
         # Select the next generation population
         pop_tar = toolbox.select(pop_tar + offspring, MU)
@@ -468,7 +474,7 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 
 
 if __name__ == "__main__":
-    test_it_with_bp(play = 1, NGEN = 3, MU = 4*25, play_with_whole_pareto = 1)
+    test_it_with_bp(play = 1, NGEN = 100, MU = 4*25, play_with_whole_pareto = 1)
 
     # file_ob.write( "test on one with min validation error " + str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))))
 
