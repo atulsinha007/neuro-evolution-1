@@ -34,11 +34,11 @@ dum_arr = source_label_lis_num_arr.reshape((source_label_lis_num_arr.shape[0], 1
 clumped_arr = np.concatenate( (source_feat_mat, dum_arr), axis = 1)
 numlis = np.arange(clumped_arr.shape[0])
 ann = source_feat_mat.shape[0]
-print(clumped_arr[:3])
+
 rng.shuffle(numlis)
 clumped_arr = clumped_arr[ numlis ]
 clumped_source = clumped_arr[:]
- 
+print(clumped_arr[:3])
 assert( os.path.isfile(os.path.join(pstri + path, 'tar_data.pickle')))
 fs = open( pstri + "pickle_jar/tar_data.pickle", "rb")
 target_feat_mat, target_label_lis_num_arr = pickle.load(fs)

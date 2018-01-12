@@ -54,9 +54,28 @@ def minimize_tar_approach2(individual):
     neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_tar.resty)
     neg_log_likelihood_val_src = give_neg_log_likelihood( outputarr_src,network_obj_src.resty)
 
+    testy = network_obj_tar.resty
+    if outputarr.shape[1] == 1:
+        newar = np.where(outputarr > 0.5, 1, 0)
+        newar = np.ravel(newar)
+    else:
+        newar = np.argmax(outputarr, axis=1)
+    #print("newar")
+   # print(newar.shape[0])
+    #print(testy.shape[0])
+    newarr=[]
+    for i in range(0,newar.shape[0]):    
+        #newarr = np.where(newar != testy, 1, 0)
+        if(newar[i]!=testy[i]):
+            newarr.append(1)
+        else:
+            newarr.append(0)
+    obj3 = np.mean(newarr)
+
+
     # anyways not using these as you can see in 'creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))'
     # return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
-    return neg_log_likelihood_val, neg_log_likelihood_val_src
+    return neg_log_likelihood_val, neg_log_likelihood_val_src, obj3
 def mycross(ind1, ind2, gen_no):
     child1 = crossover(ind1, ind2, gen_no, inputdim=indim, outputdim=outdim)
     child2 = crossover(ind1, ind2, gen_no, inputdim=indim, outputdim=outdim)
@@ -211,9 +230,9 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
     fronts = tools.sortNondominated(pop_src, len(pop_src))
 
 
+    #print("lalalalalala")
 
-
-
+    pareto_front = fronts[0]
     if len(pareto_front) < MU:
         diff = MU - len(pareto_front)
         pop_tar = pareto_front + toolbox.population(n=diff)
@@ -223,11 +242,13 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
         pop_tar = pareto_front
 
 
-
+    
     #reiterating
     CXPB = 0.9
+    creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0))
+    creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
     toolbox.register("evaluate", minimize_tar_approach2)
-    pareto_front = fronts[0]
+    #pareto_front = fronts[0]
     stats = tools.Statistics(lambda ind: ind.fitness.values[1])
     # stats.register("avg", numpy.mean, axis=0)
     # stats.register("std", numpy.std, axis=0)
@@ -261,10 +282,25 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
     flag= 0
     # Begin the generational process
     # print(pop.__dir__())
+    mis_class_str = ""
     for gen in range(1, NGEN):
-
+        pareto_front=fronts[0]
         # Vary the population
-        print()
+        summ=0
+        for par in pareto_front:
+           # print("hi")
+            #print(par)
+            ob1, ob2 ,ob3= minimize_tar_approach2(par)
+            summ += ob3
+            #print("ob3")
+            #print(ob3)
+            #print(ob2)
+        #print("hello")
+        #print(sum)
+        #print(len(pareto_front))    
+        summ = summ/len(pareto_front)   
+        mis_class_str +=  (str(summ) + ' ')
+        print("average misclassification in this gen is " + str(summ))
         print("here in gen no.", gen)
         offspring = tools.selTournamentDCD(pop_tar, len(pop_tar))
         offspring = [toolbox.clone(ind) for ind in offspring]
@@ -318,6 +354,7 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
         print(anost)
         stri += anost + '\n'
         print("generation done")
+        fronts = tools.sortNondominated(pop_tar, len(pop_tar))
         # file_ob.write(str(logbook.stream))
         # print(len(pop))
         # file_ob.close()
