@@ -18,7 +18,7 @@ from chromosome import Chromosome, crossover
 n_hidden = 100
 indim = 32
 outdim = 5
-epsilon_gen = 1
+epsilon_gen = 60
 epsilon = 0.8
 network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target = 0, rng = random)
 
