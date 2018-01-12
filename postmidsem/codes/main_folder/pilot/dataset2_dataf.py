@@ -165,8 +165,9 @@ def give_rest_and_test( tup, indlow, indhigh):
 	test_label = label_arr[pind:]
 	assert (test_arr.shape[0] == test_label.shape[0])
 	return (rest_arr, rest_label), (test_arr, test_label)
-def make_test_ar_dslr(  tar_tup ):
+def make_test_ar_dslr():
 
+	tar_tup = (target_feat_mat, target_label_lis_num_arr)
 	lis_of_number, lis_of_cardinal = find_indices_dslr( tar_tup )
 	assert (lis_of_number[-1] == tar_tup[0].shape[0])
 	#tar_arr = tar_tup[0]
@@ -216,7 +217,7 @@ def make_test_ar_dslr(  tar_tup ):
 	return [(tar_rest_arr_to_return, tar_rest_label_to_return), two_tup_lis]
 def main():
 
-	print( make_test_ar_dslr( (target_feat_mat, target_label_lis_num_arr)))
+	print( make_test_ar_dslr( ))
 if __name__=="__main__":
 	main()
 #git config --global http.proxy https://172.31.1.5:8080/
