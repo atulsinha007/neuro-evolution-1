@@ -47,12 +47,17 @@ class Neterr:
             rest_set, test_set = dataset2_dataf.give_target_data()
         elif change_to_target == 2:
             rest_set, test_set = dataset2_dataf.give_target_data_just_src_just_tar()
-        elif change_to_target
+        elif change_to_target == 100:
+            rest_set, test_set_tup = dataset2_dataf.make_test_ar_dslr()
         # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
         self.restx = rest_set[0]
         resty = rest_set[1]
-        self.testx = test_set[0]
-        testy = test_set[1]
+        if change_to_target != 100:
+            self.testx = test_set[0]
+        else:
+            self.testxy_lis_tup = test_set_tup
+        if change_to_target != 100:
+            testy = test_set[1]
         #print("one time", resty.shape, testy.shape, self.restx.shape)
 
         self.resty = np.ravel(resty)
@@ -60,9 +65,17 @@ class Neterr:
         self.rest_setx = tf.Variable(initial_value = self.restx, name='rest_setx',
                                      dtype=tf.float32)
         self.rest_sety = tf.Variable(initial_value = self.resty, name='rest_sety', dtype=tf.int32)
-        self.test_setx = tf.Variable(initial_value = self.testx, name='rest_sety',
+        if change_to_target != 100:
+            self.test_setx = tf.Variable(initial_value = self.testx, name='rest_sety',
                                      dtype=tf.float32)
-        self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
+        else:
+            self.test_setx = tf.Variable(initial_value = test_set_tup[0][0], name='rest_sety',
+                                     dtype=tf.float32)
+        if change_to_target != 100:
+            self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
+        else:
+            self.test_sety = tf.Variable(initial_value=test_set_tup[0][2], name='test_sety', dtype=tf.int32)
+
         #self.inputarr = inputarr
         self.inputarr = self.restx
         #print("shape here",self.restx.shape)
@@ -205,6 +218,39 @@ class Neterr:
         self.inputarr = temp
         return np.mean(to_find_mean_arr)
 
+    def test_on_pareto_patch_correctone_modified(self, pareto_set):
+        temp = self.inputarr
+        #temper = copy.deepcopy(self.testx)
+        err_lis = []
+        for tup in self.testxy_lis_tup:
+            testx = tup[0]
+            testy = tup[1]
+            temper = testx
+            grand_lis = []
+
+            for row in temper:
+                row_matrix = row.reshape((1, row.shape[0]))
+                lis = []
+                self.inputarr = row_matrix
+                for chromo in pareto_set:
+                    arr = self.feedforward_ne(chromo)
+                    assert (arr.shape[0] == 1)
+                    lis.append(list(arr.reshape((arr.shape[1],))))
+                output_of_all_nn_on_one_data_point = np.array(lis)
+                activated_output_of_all_nn_on_one_data_point = softmax(output_of_all_nn_on_one_data_point)
+                avrg = np.mean(activated_output_of_all_nn_on_one_data_point, axis=0)
+                argmax_at_avg = avrg.argmax()
+                grand_lis.append(argmax_at_avg)
+            grand_lis_arr = np.array(grand_lis)
+            assert (grand_lis_arr.shape == testy.shape)
+
+            difference = testy - grand_lis_arr
+
+            to_find_mean_arr = np.where(difference != 0, 1, 0)
+            mea = np.mean(to_find_mean_arr)
+            err_lis.append(mea)
+        self.inputarr = temp
+        return np.mean(err_lis)
 
 
 
