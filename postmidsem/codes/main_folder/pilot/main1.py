@@ -453,11 +453,16 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
         file_ob.write( st )
     file_ob.close()'''
 
-    if play_with_whole_pareto or len(fronts[0]) < 30 :
-        pareto_front = fronts[0]
-    else:
+    # if play_with_whole_pareto or len(fronts[0]) < 30 :
+    #     pareto_front = fronts[0]
+    # else:
 
-        pareto_front = random.sample(fronts[0], 30)
+    #     pareto_front = random.sample(fronts[0], 30)
+    pareto_front = []
+    for par in front[0]:
+        if par.fitness.values[2] < epsilon:
+            pareto_front.append(par)
+
     print("Pareto Front: ")
     for i in range(len(pareto_front)):
         print(pareto_front[i].fitness.values)
@@ -474,7 +479,7 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 
 
 if __name__ == "__main__":
-    test_it_with_bp(play = 1, NGEN = 100, MU = 4*25, play_with_whole_pareto = 1)
+    test_it_with_bp(play = 1, NGEN = 3, MU = 4*25, play_with_whole_pareto = 1)
 
     # file_ob.write( "test on one with min validation error " + str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))))
 
