@@ -17,7 +17,7 @@ from chromosome import Chromosome, crossover
 
 n_hidden = 100
 indim = 10
-outdim = 10
+outdim = 11
 network_obj = Neterr(indim, outdim, n_hidden, np.random)
 creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
 creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
@@ -25,9 +25,7 @@ creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
 toolbox = base.Toolbox()
 
 
-
 def minimize(individual):
-
     outputarr = network_obj.feedforward_ne(individual)
 
     neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj.resty)
@@ -39,9 +37,8 @@ def minimize(individual):
 
 
 def mycross(ind1, ind2, gen_no):
-    child1 = crossover(ind1, ind2, gen_no, inputdim=10, outputdim=10)
-    child2 = crossover(ind1, ind2, gen_no, inputdim=10, outputdim=10)
-
+    child1 = crossover(ind1, ind2, gen_no, inputdim=10, outputdim=11)
+    child2 = crossover(ind1, ind2, gen_no, inputdim=10, outputdim=11)
     return child1, child2
 
 
@@ -54,7 +51,6 @@ def initIndividual(ind_class, inputdim, outputdim):
     ind = ind_class(inputdim, outputdim)
     return ind
 
-
 toolbox.register("individual", initIndividual, creator.Individual, indim, outdim)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
@@ -64,11 +60,10 @@ toolbox.register("mutate", mymutate)
 toolbox.register("select", tools.selNSGA2)
 
 bp_rate = 0.05
+
 def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
     random.seed(seed)
-
-
-      # this has to be a multiple of 4. period.
+    # this has to be a multiple of 4. period.
     CXPB = 0.9
 
     stats = tools.Statistics(lambda ind: ind.fitness.values[1])
@@ -104,10 +99,16 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
         # Vary the population
         offspring = tools.selTournamentDCD(pop, len(pop))
         offspring = [toolbox.clone(ind) for ind in offspring]
-        if play == 1:
-            if gen == int(NGEN*0.9):
+        if play :
+            if play == 1:
+                pgen = NGEN*0.1
+            elif play == 2 :
+                pgen = NGEN*0.9
+
+            if gen == int(pgen):
                 print("gen:",gen, "doing clustering")
-                to_bp_lis = cluster.give_cluster_head(offspring, int(MU*bp_rate))
+                #to_bp_lis = cluster.give_cluster_head(offspring, int(MU*bp_rate))
+                to_bp_lis = random.sample(offspring, int(MU*bp_rate))
                 assert (to_bp_lis[0] in offspring )
                 print( "doing bp")
                 [ item.modify_thru_backprop(indim, outdim, network_obj.rest_setx, network_obj.rest_sety, epochs=10, learning_rate=0.1, n_par=10) for item in to_bp_lis]
@@ -153,8 +154,8 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
 
     return pop, logbook
 
-def note_this_string(new_st,stringh):
 
+def note_this_string(new_st, stringh):
     """flag_ob = open("flag.txt","r+")
 
     ctr = None
@@ -172,7 +173,7 @@ def note_this_string(new_st,stringh):
         flag_ob.close()
         '/home/robita/forgit/neuro-evolution/05/state/tf/indep_pima/input/model.ckpt.meta'
     """
-    name = "./ctr_folder/ctr"+stringh+".txt"
+    name = "./ctr_folder/ctr" + stringh + ".txt"
     if not os.path.isfile(name):
         new_f = open(name, "w+")
         new_f.write("0\n")
@@ -183,7 +184,7 @@ def note_this_string(new_st,stringh):
     assert (strin is not '')
     ctr = int(strin)
     ctr_ob.seek(0)
-    ctr_ob.write(str(ctr+1)+"\n")
+    ctr_ob.write(str(ctr + 1) + "\n")
     ctr_ob.close()
     """  
         flag_ob = open("flag.txt","w")
@@ -191,15 +192,14 @@ def note_this_string(new_st,stringh):
         flag_ob.close()
     """
 
-    new_file_ob = open("log_folder/log"+stringh+".txt", "a+")
-    new_file_ob.write(str(ctr)+" "+new_st+"\n")
+    new_file_ob = open("log_folder/log" + stringh + ".txt", "a+")
+    new_file_ob.write(str(ctr) + " " + new_st + "\n")
     new_file_ob.close()
     return ctr
 
 
-
 def test_it_without_bp():
-    pop, stats = main(NGEN = 80 , MU = 4 * 25)
+    pop, stats = main()
     stringh = "_without_bp"
     fronts = tools.sortNondominated(pop, len(pop))
     if len(fronts[0]) < 30:
@@ -214,18 +214,19 @@ def test_it_without_bp():
     neter = Neterr(indim, outdim, n_hidden, np.random)
 
     print("\ntest: test on one with min validation error", neter.test_err(min(pop, key=lambda x: x.fitness.values[1])))
-    tup = neter.test_on_pareto_patch_correctone(pareto_front)
+    tup = neter.test_on_pareto_patch(pareto_front)
 
-    print("\n test: avg on sampled pareto set", tup)
+    print("\n test: avg on sampled pareto set", tup[0], "least found avg", tup[1])
 
-    st = str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))) + " " + str(tup) 
+    st = str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))) + " " + str(tup[0]) + " " + str(tup[1])
     print(note_this_string(st, stringh))
 
-def test_it_with_bp():
-    pop, stats = main( play = 1, NGEN = 40)
-    stringh = "_with_bp"
-    fronts = tools.sortNondominated(pop, len(pop))
 
+def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25):
+    
+    pop, stats = main( play = play, NGEN = NGEN, MU = MU)
+    stringh = "_with_bp_without_clustring"+str(play)+"_"+str(NGEN)
+    fronts = tools.sortNondominated(pop, len(pop))
     if len(fronts[0]) < 30:
         pareto_front = fronts[0]
     else:
@@ -243,11 +244,11 @@ def test_it_with_bp():
     print("\n test: avg on sampled pareto set", tup)
 
     st = str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))) + " " + str(tup) 
-    print(note_this_string(st, stringh))
+    print(note_this_string(st, stringh))##################################################################################
+
 
 if __name__ == "__main__":
-    test_it_without_bp()
-
+    test_it_with_bp(play = 1, NGEN = 80, MU = 4*25)
 
     # file_ob.write( "test on one with min validation error " + str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))))
 
@@ -255,7 +256,7 @@ if __name__ == "__main__":
     '''
     import matplotlib.pyplot as plt
     import numpy
-    
+
     front = numpy.array([ind.fitness.values for ind in pop])
     plt.scatter(front[:,0], front[:,1], c="b")
     plt.axis("tight")

@@ -114,7 +114,7 @@ class Population(object):
 
 def main():
 	import copy
-	dimtup = (10, 10)
+	dimtup = (10, 11)
 	pop = Population(4, dimtup, size=9)
 
 	print(pop.list_chromo)
