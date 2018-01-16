@@ -11,16 +11,16 @@ def standardize_dataset(traindata, means, stdevs):
                 row[i]/=stdevs[i]
 rng=random
 
-glassdata=np.loadtxt("glass.csv", delimiter=',')
+voweldata=np.loadtxt("vowel.csv", delimiter=',')
 
-#rng.shuffle(glassdata) this was a big big error
-numlis = np.arange(glassdata.shape[0])
+#rng.shuffle(voweldata) this was a big big error
+numlis = np.arange(vowel.shape[0])
 rng.shuffle(numlis)
-glassdata = glassdata[ numlis ]
+vowel = vowel[ numlis ]
 
 
-glassdata=glassdata.astype(float)
-traindata=glassdata
+vowel=vowel.astype(float)
+traindata=vowel
 means= traindata.mean(axis=0)
 
 stdevs=np.std(traindata,axis=0)
@@ -28,8 +28,8 @@ stdevs=np.std(traindata,axis=0)
 standardize_dataset(traindata[:,:9],means,stdevs)
 
 def get_dimension():
-    in_dem = 9
-    out_dem = 1
+    in_dem = 10
+    out_dem = 10
     return (in_dem, out_dem)
 
 def myrange(start,end,step):
@@ -45,11 +45,11 @@ def give_data():
     #3. make setpool out of the dataset
     #4. make pcn and train it
     #5. test on validation and testing set    
-    rest_setx=glassdata[:160,:9]#tuple of two shared variable of array
-    rest_sety=glassdata[:160,9:]
-    test_setx=glassdata[160:,:9]
-    test_sety=glassdata[160:,9:]
-    #print(glassdata.shape)
+    rest_setx=voweldata[:396,:10]#tuple of two shared variable of array
+    rest_sety=voweldata[:396,10:]
+    test_setx=voweldata[396:,:10]
+    test_sety=voweldata[396:,10:]
+    #print(voweldata.shape)
     #print(rest_setx.shape,test_setx.shape)
     return ((rest_setx,rest_sety),(test_setx,test_sety))
 
