@@ -14,13 +14,13 @@ rng=random
 voweldata=np.loadtxt("vowel.csv", delimiter=',')
 
 #rng.shuffle(voweldata) this was a big big error
-numlis = np.arange(vowel.shape[0])
+numlis = np.arange(voweldata.shape[0])
 rng.shuffle(numlis)
-vowel = vowel[ numlis ]
+voweldata = voweldata[ numlis ]
 
 
-vowel=vowel.astype(float)
-traindata=vowel
+voweldata=voweldata.astype(float)
+traindata=voweldata
 means= traindata.mean(axis=0)
 
 stdevs=np.std(traindata,axis=0)
