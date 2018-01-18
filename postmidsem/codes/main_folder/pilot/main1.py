@@ -28,9 +28,36 @@ creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
 print("here network object created")
 toolbox = base.Toolbox()
 
-
+def softmax(arr):
+    assert( arr.shape[0] > 1)
+    exp_arr = np.exp( arr )
+    sum_arr = np.sum(exp_arr, axis = 1)
+    sum_arr = sum_arr.reshape((sum_arr.shape[0],1))
+    div_arr = exp_arr/sum_arr
+    return div_arr
+def row_normalize( arr ):
+    assert (arr.shape[0] > 1)
+    min_arr = np.min( arr, axis = 1)
+    min_arr_c = min_arr.reshape((min_arr.shape[0], 1))
+    min_arr_reap = np.repeat( min_arr_c, arr.shape[1], axis = 1)
+    max_arr = np.max( arr, axis = 1)
+    diff = max_arr - min_arr
+    diff_c = diff.reshape( ( diff.shape[0], 1))
+    N = 0.0000000000001
+    return (arr - min_arr_reap + N)/(diff_c + N)
+#def min_elem_but_not_zero()
+def zoom( arr ):
+    assert (arr.shape[1] > 1)
+    min_elem = np.min( arr)
+    arr = arr - min_elem
+    mean_elem = np.mean(arr)
+    while( mean_elem<0.099):
+        arr = arr*10
+        mean_elem = np.mean(arr)
+    return arr
 def minimize_src(individual):
     outputarr = network_obj_src.feedforward_ne(individual)
+    outputarr = zoom(softmax(outputarr))
 
     neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_src.resty)
     mean_square_error_val = give_mse(outputarr, network_obj_src.resty)
@@ -40,7 +67,7 @@ def minimize_src(individual):
     return neg_log_likelihood_val, mean_square_error_val
 def minimize_tar(individual):
     outputarr = network_obj_tar.feedforward_ne(individual)
-
+    outputarr = zoom(softmax(outputarr))
     neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_tar.resty)
     mean_square_error_val = give_mse(outputarr, network_obj_tar.resty)
 
@@ -143,7 +170,7 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
                 to_bp_lis = cluster.give_cluster_head(offspring, int(MU*bp_rate))
                 assert (to_bp_lis[0] in offspring )
                 print( "doing bp")
-                [ item.modify_thru_backprop(indim, outdim, network_obj_src.rest_setx, network_obj_src.rest_sety, epochs=10, learning_rate=0.1, n_par=10) for item in to_bp_lis]
+                [ item.modify_thru_backprop(indim, outdim, network_obj_src.rest_setx, network_obj_src.rest_sety, epochs=20, learning_rate=0.1, n_par=10) for item in to_bp_lis]
 
                 # Evaluate the individuals with an invalid fitness
                 invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
@@ -206,6 +233,7 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
     if len(pareto_front) < MU:
         diff = MU - len(pareto_front)
         pop_tar = pareto_front + toolbox.population(n=diff)
+        assert( len(pop_tar) == MU)
 
     else:
         assert( len(pareto_front) == MU)
@@ -415,7 +443,7 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 
 
 if __name__ == "__main__":
-    test_it_with_bp(play = 1, NGEN = 100, MU = 4*25, play_with_whole_pareto = 1)
+    test_it_with_bp(play = 1, NGEN = 130, MU = 4*50, play_with_whole_pareto = 1)
 
     # file_ob.write( "test on one with min validation error " + str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))))
 

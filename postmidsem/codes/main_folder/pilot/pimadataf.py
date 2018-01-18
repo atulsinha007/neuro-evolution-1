@@ -52,7 +52,7 @@ def give_data():
     test_sety=pimadata[538:,8:]
     #print(pimadata.shape)
     #print(rest_setx.shape,test_setx.shape)
-    return ((rest_setx,rest_sety),(test_setx,test_sety))
+    return ( ( rest_setx, rest_sety), ( test_setx, test_sety ) )
 
 def main():
     print(give_data()[1])

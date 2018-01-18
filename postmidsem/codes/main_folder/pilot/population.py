@@ -19,20 +19,25 @@ import copy
 def give_neg_log_likelihood( arr , oneDarr):
     parr = arr #normalize(arr,axis = 0)
     if parr.shape[1] == 1:
-         summer = np.sum([ - (oneDarr[i]*np.log(parr[i,0]+ 0.000000000001 ) + (1-oneDarr[i])*np.log(1 - parr[i,0]+0.000000000001)) for i in range(parr.shape[0]) ])
+         summer = np.sum([ - (oneDarr[i]*np.log(parr[i,0]+ 0.0000000000000001 ) + (1-oneDarr[i])*np.log(1 - parr[i,0]+0.0000000000000001)) for i in range(parr.shape[0]) ])
     else:
          poneDarr = oneDarr.astype('int32')
          #print(oneDarr)
 
-         summer = np.sum ([ - np.log(parr[i,poneDarr[i]]+ 0.000000000001) for i in range(parr.shape[0]) ]   )
+         summer = np.sum ([ - np.log(parr[i,poneDarr[i]]+ 0.00000000000000001) for i in range(parr.shape[0]) ]   )
     return summer/parr.shape[0]
 
+
 def give_mse(arr, oneDarr):
-    onedarr = oneDarr.astype( dtype = 'int32')
-    twodarr = np.zeros(arr.shape)
+    onedarr = oneDarr.astype(dtype='int32')
+    '''twodarr = np.zeros(arr.shape)
     for i in range(onedarr.shape[0]):
         twodarr[i][onedarr[i]] = 1
-    return np.sum((arr - twodarr)**2)
+    '''
+    lis = []
+    for rownum in range(arr.shape[0]):
+        lis.append(1 - arr[rownum][onedarr[rownum]])
+    return np.sum(np.array(lis) ** 2)
 
 
 
