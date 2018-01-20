@@ -32,7 +32,7 @@ def minimize(individual):
     mean_square_error_val = give_mse(outputarr, network_obj.resty)
     false_positve_rat = give_false_positive_ratio(outputarr, network_obj.resty)
     false_negative_rat = give_false_negative_ratio(outputarr, network_obj.resty)
-
+    #print("hi")
     return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
 
 
@@ -86,6 +86,7 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
     #network_obj = Neterr(indim, outdim, n_hidden, np.random)
     # Evaluate the individuals with an invalid fitness
     invalid_ind = [ind for ind in pop if not ind.fitness.valid]
+    #a,b,c,d = minimize(pop[0])
     fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
     for ind, fit in zip(invalid_ind, fitnesses):
         ind.fitness.values = fit
@@ -93,7 +94,7 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
     print("After feedforward", time3 - time2)
     # This is just to assign the crowding distance to the individuals
     # no actual selection is done
-    pop = toolbox.select(pop, len(pop))
+    pop,fronts1 = toolbox.select(pop, len(pop)) #might be an error
     # print(pop)
     record = stats.compile(pop)
     logbook.record(gen=0, evals=len(invalid_ind), **record)
@@ -111,7 +112,8 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
             time6 = time.time()
         if gen == NGEN-1:
             time7 = time.time()
-        offspring = tools.selTournamentDCD(pop, len(pop))
+        offspring = tools.selTournamentDCD(pop, len(pop), fronts1)
+        print("hi");
         offspring = [toolbox.clone(ind) for ind in offspring]
         if gen == 1:
             print("1st gen after clone",time.time() - time6)
@@ -161,7 +163,7 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
             ind.fitness.values = fit
 
         # Select the next generation population
-        pop = toolbox.select(pop + offspring, MU)
+        pop, fronts1 = toolbox.select(pop + offspring, MU)
 
         record = stats.compile(pop)
         logbook.record(gen=gen, evals=len(invalid_ind), **record)
@@ -219,7 +221,7 @@ def note_this_string(new_st, stringh):
         flag_ob.close()
     """
 
-    new_file_ob = open("log_folder/log" + stringh + ".txt", "a+")
+    new_file_ob = open("log_folder_changed/log" + stringh + ".txt", "a+")
     new_file_ob.write(str(ctr) + " " + new_st + "\n")
     new_file_ob.close()
     return ctr
