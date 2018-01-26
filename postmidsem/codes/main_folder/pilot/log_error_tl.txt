@@ -1,0 +1,13 @@
+
+
+time.struct_time(tm_year=2018, tm_mon=1, tm_mday=27, tm_hour=2, tm_min=57, tm_sec=51, tm_wday=5, tm_yday=27, tm_isdst=0)
+Traceback (most recent call last):
+  File "main_half.py", line 460, in <module>
+    test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1)
+  File "main_half.py", line 425, in test_it_with_bp
+    pop, stats = main( play = play, NGEN = NGEN, MU = MU)
+  File "main_half.py", line 333, in main
+    new_full_pop_sorted += new_fronts[i]
+IndexError: list index out of range
+
+
