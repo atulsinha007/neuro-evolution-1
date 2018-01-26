@@ -123,13 +123,13 @@ def make_source_data():
 
 def make_target_data():
 	global fstri, dir_lis
-	stri = fstri + 'dslr/images/'
+	stri = fstri + 'webcam/images/'
 	
 	tup = make_data_from_image_dslr( stri, dir_lis )
 	fs = open( pstri+"pickle_jar/tar_data.pickle", "wb")
 	pickle.dump( tup , fs)
 	fs.close()
-	
+
 if __name__ == '__main__':
 	make_source_data()
 	make_target_data()
