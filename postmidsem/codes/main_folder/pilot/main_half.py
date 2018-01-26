@@ -221,6 +221,7 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
 	full_pop_sorted = []
 	for i in range(len(fronts)):
 		full_pop_sorted += fronts[i]
+	assert( len(full_pop_sorted) == MU)
 	print("fronts", full_pop_sorted)
 	print(pareto_front)
 	print("Pareto Front: ")
@@ -229,6 +230,7 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
 	assert(MU%4==0)
 	pop_tar = full_pop_sorted[:MU//2]+toolbox.population(n=MU//2)
 	switch_gen = NGEN*7//10
+	assert(len(pop_tar) == MU)
 
 
 	#reiterating
@@ -329,9 +331,10 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
 		if gen==switch_gen:
 			new_fronts = tools.sortNondominated(pop_tar, len(pop_tar))
 			new_full_pop_sorted = []
-			for i in range(len(fronts)):
+			for i in range(len(new_fronts)):
 				new_full_pop_sorted += new_fronts[i]
 			pop_tar = new_full_pop_sorted[:MU//2] + full_pop_sorted[MU//2:]
+			assert(len(pop_tar) == MU)
 
 
 		record = stats.compile(pop_tar)
@@ -457,7 +460,7 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 if __name__ == "__main__":
 	logf = open("log_error_tl.txt", "a")
 	try:
-		test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1)
+		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1)
 	except Exception as e:
 		print("Error! Error! Error!")
 		logf.write('\n\n')
