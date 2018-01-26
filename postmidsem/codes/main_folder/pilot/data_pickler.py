@@ -8,7 +8,7 @@ from skimage import data, exposure
 import PIL
 import pickle
 pstri = './'
-fstri = '/home/robita/forgit/Dataset2/domain_adaptation_images/'
+fstri = '/home/placements2018/forgit/Dataset2/domain_adaptation_images/'
 dir_lis = [ 'back_pack', 'bike', 'bike_helmet', 'bookcase', 'bottle']
 def files(path):  
     for file in os.listdir(path):
@@ -50,7 +50,7 @@ def find_features_webcam( file_st ):
 	image = np.asarray(PIL.Image.open(file_st))
 	image = to_gray(image)
 	#print(image.shape)
-	fd, hog_image = hog(image, orientations=8, pixels_per_cell=(211, 211),block_norm = 'L1-sqrt',
+	fd, hog_image = hog(image, orientations=8, pixels_per_cell=(image.shape[0]//2, image.shape[1]//2),block_norm = 'L1-sqrt',
 						cells_per_block=(1, 1), visualise=True)
 	return fd
 
@@ -131,6 +131,6 @@ def make_target_data():
 	fs.close()
 
 if __name__ == '__main__':
-	make_source_data()
+	#make_source_data()
 	make_target_data()
 
