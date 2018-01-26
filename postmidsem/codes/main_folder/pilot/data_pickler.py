@@ -125,7 +125,7 @@ def make_target_data():
 	global fstri, dir_lis
 	stri = fstri + 'webcam/images/'
 	
-	tup = make_data_from_image_dslr( stri, dir_lis )
+	tup = make_data_from_image_webcam( stri, dir_lis )
 	fs = open( pstri+"pickle_jar/tar_data.pickle", "wb")
 	pickle.dump( tup , fs)
 	fs.close()
