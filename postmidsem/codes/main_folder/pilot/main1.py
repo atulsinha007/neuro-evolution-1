@@ -415,7 +415,7 @@ def test_it_without_bp():
 def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 
 	pop, stats = main( play = play, NGEN = NGEN, MU = MU)
-	stringh = "_with_bp_approach2"+str(play)+"_"+str(NGEN)
+	stringh = "_with_bp_approach2_webcam"+str(play)+"_"+str(NGEN)
 	fronts = tools.sortNondominated(pop, len(pop))
 
 	'''file_ob = open("./log_folder/log_for_graph.txt", "w+")
