@@ -1,0 +1,9 @@
+
+
+time.struct_time(tm_year=2018, tm_mon=1, tm_mday=27, tm_hour=18, tm_min=35, tm_sec=20, tm_wday=5, tm_yday=27, tm_isdst=0)
+
+
+time.struct_time(tm_year=2018, tm_mon=1, tm_mday=27, tm_hour=20, tm_min=45, tm_sec=10, tm_wday=5, tm_yday=27, tm_isdst=0)
+
+
+time.struct_time(tm_year=2018, tm_mon=1, tm_mday=27, tm_hour=21, tm_min=20, tm_sec=45, tm_wday=5, tm_yday=27, tm_isdst=0)
