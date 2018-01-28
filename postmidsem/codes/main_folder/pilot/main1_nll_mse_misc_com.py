@@ -227,18 +227,19 @@ def main(seed=None, play = 0, NGEN = 40, MU = 4 * 10):
 	print(pareto_front)
 	print("Pareto Front: ")
 	st='\n\n'
-	pareto_log_fileo = open("./log_folder/log_pareto_main1_nll_mse_misc_com"+str(NGEN)+".txt", "a")
+	pareto_log_fileo = open("./log_folder/log_pareto_main1_perc_nll_mse_misc_com"+str(NGEN)+".txt", "a")
+	to_add_lis = []
 	for i in range(len(pareto_front)):
 		print(pareto_front[i].fitness.values)
-		st += str(pareto_front[i].fitness.values)
-		pareto_log_fileo.write(st+'\n')
+		if(pareto_front[i].fitness.values[-1] <= indim*outdim+2):
+			st += str(pareto_front[i].fitness.values)+'\n'
+			to_add_lis.append(pareto_front[i])
+	pareto_log_fileo.write(st +str(len(to_add_lis))+ '\n\n')
 	pareto_log_fileo.close()
-	if len(pareto_front) < MU:
-		diff = MU - len(pareto_front)
-		pop_tar = pareto_front + toolbox.population(n=diff)
-	else:
-		assert( len(pareto_front) == MU)
-		pop_tar = pareto_front
+	diff = MU - len(to_add_lis)
+	pop_tar = to_add_lis + toolbox.population(n=diff)
+	assert(len(pop_tar) == MU)
+
 
 
 
@@ -427,7 +428,7 @@ def test_it_without_bp():
 def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 
 	pop, stats = main( play = play, NGEN = NGEN, MU = MU)
-	stringh = "_with_bp_approach2_nll_mse_misc_com"+str(play)+"_"+str(NGEN)
+	stringh = "_with_bp_approach2_perc_nll_mse_misc_com"+str(play)+"_"+str(NGEN)
 	fronts = tools.sortNondominated(pop, len(pop))
 
 	'''file_ob = open("./log_folder/log_for_graph.txt", "w+")
@@ -461,7 +462,7 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 if __name__ == "__main__":
 	logf = open("./log_error_tl_nll_mse_misc_com.txt", "a")
 	try:
-		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1)
+		test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1)
 	except Exception as e:
 		print("Error! Error! Error!")
 		logf.write('\n\n')
