@@ -415,7 +415,6 @@ def test_it_without_bp():
     st = str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))) + " " + str(tup[0]) + " " + str(tup[1])
     print(note_this_string(st, stringh))
 
-
 def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 
     pop, stats = main( play = play, NGEN = NGEN, MU = MU)
@@ -427,7 +426,6 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
         st = str(item.fitness.values[0]) + " " + str(item.fitness.values[1])+"\n"
         file_ob.write( st )
     file_ob.close()'''
-
 
     if play_with_whole_pareto or len(fronts[0]) < 30 :
         pareto_front = fronts[0]
@@ -452,7 +450,7 @@ def test_it_with_bp(play = 1,NGEN = 100, MU = 4*25, play_with_whole_pareto = 0):
 
 if __name__ == "__main__":
     logf = open("log_error_tl.txt", "a")
-    try:''
+    try:
         test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1)
     except Exception as e:
         print("Error! Error! Error!")
