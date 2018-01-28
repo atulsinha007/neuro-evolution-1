@@ -23,7 +23,7 @@ outdim = 5
 
 network_obj_tar = Neterr(indim, outdim, n_hidden, change_to_target=1, rng=random)
 # creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
-creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0))
+creator.create("FitnessMin", base.Fitness, weights=(1.0, 1.0))
 creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
 print("here network object created")
 toolbox = base.Toolbox()
@@ -34,13 +34,14 @@ toolbox = base.Toolbox()
 def minimize_tar(individual):
 	outputarr = network_obj_tar.feedforward_ne(individual,  final_activation=network.softmax)
 
-	neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_tar.resty)
-	mean_square_error_val = give_mse(outputarr, network_obj_tar.resty)
+	#neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_tar.resty)
+	#mean_square_error_val = give_mse(outputarr, network_obj_tar.resty)
 
 	# anyways not using these as you can see in 'creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))'
 	# return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
-	return neg_log_likelihood_val, mean_square_error_val
-
+	#return neg_log_likelihood_val, mean_square_error_val
+	sensitivity,precision = sens_and_prec(outputarr, network_obj_tar.resty)
+	return sensitivity,precision
 
 def mycross(ind1, ind2, gen_no):
 	child1 = crossover(ind1, ind2, gen_no, inputdim=indim, outputdim=outdim)
