@@ -35,6 +35,163 @@ def give_mse(arr, oneDarr):
     return np.sum((arr - twodarr)**2)
 
 
+def sens_and_spec(arr, oneDarr):
+    onedarr = oneDarr.astype(dtype='int32')
+    twodarr = np.zeros(arr.shape)
+    obtained_arr = np.zeros(arr.shape)
+    for i in range(onedarr.shape[0]):
+        twodarr[i][onedarr[i]] = 1
+    arr = np.argmax(arr, axis=1)
+    # print(arr)
+
+    # print(twodarr)
+
+    for i in range(oneDarr.shape[0]):
+        obtained_arr[i][arr[i]] = 1
+    # print(obtained_arr)
+    tp_store = []
+    fn_store = []
+    tn_store = []
+    fp_store = []
+    # print(obtained_arr.shape)
+    for i in range(obtained_arr.shape[1]):
+        tp = 0
+        fn = 0
+        tn = 0
+        fp = 0
+
+        for j in range(obtained_arr.shape[0]):
+            if (obtained_arr[j][i] == 1 and twodarr[j][i] == 1):
+                tp = tp + 1
+            elif (obtained_arr[j][i] == 0 and twodarr[j][i] == 1):
+                fn = fn + 1
+            elif(obtained_arr[j][i] == 0 and twodarr[j][i] == 0):
+                tn = tn + 1
+            else:
+                fp = fp + 1
+        tp_store.append(tp)
+        fn_store.append(fn)
+        tn_store.append(tn)
+        fp_store.append(fp)
+
+    sens = []
+    spec = []
+    assert(len(tp_store) == len(fn_store) == len(tn_store) == len(fp_store))
+    for i in range(len(tp_store)):
+        sens.append(tp_store[i]/(tp_store[i]+fn_store[i]))
+        spec.append(tn_store[i]/(tn_store[i]+fp_store[i]))
+    return np.mean(sens),np.mean(spec)
+
+
+def sens_and_spec(arr, oneDarr):
+    onedarr = oneDarr.astype(dtype='int32')
+    twodarr = np.zeros(arr.shape)
+    obtained_arr = np.zeros(arr.shape)
+    for i in range(onedarr.shape[0]):
+        twodarr[i][onedarr[i]] = 1
+    arr = np.argmax(arr, axis=1)
+    # print(arr)
+
+    # print(twodarr)
+
+    for i in range(oneDarr.shape[0]):
+        obtained_arr[i][arr[i]] = 1
+    # print(obtained_arr)
+    tp_store = []
+    fn_store = []
+    tn_store = []
+    fp_store = []
+    # print(obtained_arr.shape)
+    for i in range(obtained_arr.shape[1]):
+        tp = 0
+        fn = 0
+        tn = 0
+        fp = 0
+
+        for j in range(obtained_arr.shape[0]):
+            if (obtained_arr[j][i] == 1 and twodarr[j][i] == 1):
+                tp = tp + 1
+            elif (obtained_arr[j][i] == 0 and twodarr[j][i] == 1):
+                fn = fn + 1
+            elif(obtained_arr[j][i] == 0 and twodarr[j][i] == 0):
+                tn = tn + 1
+            else:
+                fp = fp + 1
+        tp_store.append(tp)
+        fn_store.append(fn)
+        tn_store.append(tn)
+        fp_store.append(fp)
+
+    sens = []
+    spec = []
+    assert(len(tp_store) == len(fn_store) == len(tn_store) == len(fp_store))
+    for i in range(len(tp_store)):
+        sens.append(tp_store[i]/(tp_store[i]+fn_store[i]))
+        spec.append(tn_store[i]/(tn_store[i]+fp_store[i]))
+    return np.mean(sens),np.mean(spec)
+
+
+
+def sens_and_prec(arr, oneDarr):
+    onedarr = oneDarr.astype(dtype='int32')
+    twodarr = np.zeros(arr.shape)
+    obtained_arr = np.zeros(arr.shape)
+    for i in range(onedarr.shape[0]):
+        twodarr[i][onedarr[i]] = 1
+    arr = np.argmax(arr, axis=1)
+    # print(arr)
+
+    # print(twodarr)
+
+    for i in range(oneDarr.shape[0]):
+        obtained_arr[i][arr[i]] = 1
+    # print(obtained_arr)
+    tp_store = []
+    fn_store = []
+    tn_store = []
+    fp_store = []
+    # print(obtained_arr.shape)
+    for i in range(obtained_arr.shape[1]):
+        tp = 0
+        fn = 0
+        tn = 0
+        fp = 0
+
+        for j in range(obtained_arr.shape[0]):
+            if (obtained_arr[j][i] == 1 and twodarr[j][i] == 1):
+                tp = tp + 1
+            elif (obtained_arr[j][i] == 0 and twodarr[j][i] == 1):
+                fn = fn + 1
+            elif(obtained_arr[j][i] == 0 and twodarr[j][i] == 0):
+                tn = tn + 1
+            else:
+                fp = fp + 1
+        tp_store.append(tp)
+        fn_store.append(fn)
+        tn_store.append(tn)
+        fp_store.append(fp)
+
+    sens = []
+    spec = []
+    prec = []
+    count=0
+    assert(len(tp_store) == len(fn_store) == len(tn_store) == len(fp_store))
+    for i in range(len(tp_store)):
+        if(tp_store[i]==0 and fn_store[i]==0):
+            count=count+1
+        else:
+            sens.append(tp_store[i]/(tp_store[i]+fn_store[i]))
+        if(tn_store[i] == 0 and fp_store[i]== 0):
+            count=count+1
+        else:
+            spec.append(tn_store[i]/(tn_store[i]+fp_store[i]))
+        if(tp_store[i] == 0 and fp_store[i] == 0):
+            count=count+1
+        else:
+            prec.append(tp_store[i]/(tp_store[i] + fp_store[i] ))
+
+    return np.mean(sens),np.mean(prec)
+
 
 def give_false_positive_ratio(arr, oneDarr):
     if arr.shape[1] > 2:

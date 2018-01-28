@@ -1,0 +1,17 @@
+
+
+time.struct_time(tm_year=2018, tm_mon=1, tm_mday=28, tm_hour=8, tm_min=6, tm_sec=35, tm_wday=6, tm_yday=28, tm_isdst=0)
+Traceback (most recent call last):
+  File "main1.py", line 456, in <module>
+    test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1)
+  File "main1.py", line 421, in test_it_with_bp
+    pop, stats = main( play = play, NGEN = NGEN, MU = MU)
+  File "main1.py", line 114, in main
+    x,y = minimize_src(pop_src[0])
+  File "main1.py", line 41, in minimize_src
+    sensitivity, precision = sens_and_prec(outputarr, network_obj_src.resty)
+  File "/home/dexter/Desktop/neuro-evolution/postmidsem/codes/main_folder/pilot/population.py", line 181, in sens_and_prec
+    prec.append(tp_store[i]/(tp_store[i] + fp_store[i] ))
+ZeroDivisionError: division by zero
+
+
