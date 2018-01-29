@@ -73,6 +73,8 @@ def give_source_data():
 	assert( rest_sety.shape == (150,1))
 	assert( test_setx.shape == (50,640))
 	assert( test_sety.shape == (50,1))'''
+	rest_sety = np.ravel(rest_sety)
+	test_sety = np.ravel( test_sety)
 	return ((rest_setx,rest_sety),(test_setx,test_sety))
 
 
@@ -88,6 +90,8 @@ def give_target_data():
 	assert( rest_sety.shape == (37,1))
 	assert( test_setx.shape == (13,640))
 	assert( test_sety.shape == (13,1))'''
+	rest_sety = np.ravel(rest_sety)
+	test_sety = np.ravel( test_sety)
 	return ((rest_setx,rest_sety),(test_setx,test_sety))
 
 def give_source_data_just_src():
@@ -107,6 +111,8 @@ def give_source_data_just_src():
 	assert( rest_sety.shape == (150,1))
 	assert( test_setx.shape == (50,640))
 	assert( test_sety.shape == (50,1))'''
+	rest_sety = np.ravel(rest_sety)
+	test_sety = np.ravel( test_sety)
 	return ((rest_setx,rest_sety),(test_setx,test_sety))
 def give_target_data_just_src_just_tar():
 	bbann = 0
@@ -120,6 +126,9 @@ def give_target_data_just_src_just_tar():
 	assert( rest_sety.shape == (37,1))
 	assert( test_setx.shape == (13,640))
 	assert( test_sety.shape == (13,1))'''
+	rest_sety = np.ravel(rest_sety)
+	test_sety = np.ravel( test_sety)
+
 	return ((rest_setx,rest_sety),(test_setx,test_sety))
 def main():
 	print( give_source_data()[0][0][:10])

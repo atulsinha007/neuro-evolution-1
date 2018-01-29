@@ -98,14 +98,14 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
 
 				print(sess.run([classifier.errors(y)],feed_dict={x:valid_x_to_be.eval(feed_dict={prmsdind:ind}),y:valid_y_to_be.eval(feed_dict={prmsdind:ind})}))
 		st = str(sess.run(classifier.errors(y),feed_dict={x:test_setx.eval(),y:test_sety.eval()}))
-		fileo = open("./log_folder/log_bp_"+str(n_epochs)+".txt", "a")
+		fileo = open("./log_folder/log_bp_"+str(n_hidden)+"_"+str(n_epochs)+".txt", "a")
 		fileo.write(st+'\n')
 		fileo.close()
 		print("testing",st)
 
 def main():
 	for i in range(int(sys.argv[1])):
- 		test_mlp(n_hidden=100,n_epochs=1000)
+ 		test_mlp(n_hidden=5,n_epochs=400)
 if __name__ == '__main__':
     main()
 

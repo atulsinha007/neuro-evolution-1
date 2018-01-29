@@ -75,6 +75,8 @@ def give_source_data():
 	assert( rest_sety.shape == (150,1))
 	assert( test_setx.shape == (50,640))
 	assert( test_sety.shape == (50,1))'''
+	rest_sety = np.ravel(rest_sety)
+	test_sety = np.ravel(test_sety)
 	return ((rest_setx, rest_sety), (test_setx, test_sety))
 
 
