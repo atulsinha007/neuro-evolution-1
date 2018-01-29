@@ -27,8 +27,8 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
 
 	lis = tf_load_data.give_target_data()
 
-	rest_set=lis[1]#tuple of two shared variable of array
-	test_set=lis[0]#tuple of shared variable of array
+	rest_set=lis[0]#tuple of two shared variable of array
+	test_set=lis[1]#tuple of shared variable of array
 	rest_setx = tf.Variable(initial_value=rest_set[0], name='rest_setx', dtype=tf.float64)
 	rest_sety = tf.Variable(initial_value=rest_set[1], name='rest_sety', dtype=tf.int32)
 	test_setx = tf.Variable(initial_value=test_set[0], name='rest_sety', dtype=tf.float64)

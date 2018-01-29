@@ -10,16 +10,17 @@ import random
 def GetResult(st):
 
     name = "./log_folder/final_log_folder/" + st
+    print(st)
 
     file_ob = open(name, "r+")
 
     stlis = file_ob.readlines()
     stlis = [ item.rstrip().split(' ') for item in stlis ]
     #print(len(stlis))
-    stlis = random.sample( stlis, 15)
+    #stlis = random.sample( stlis, 15)
     result_lis = [[float(item[1]), float(item[2])] for item in stlis]
     result_arr = np.array(result_lis)
-
+    print(len(result_arr))
     print(result_arr)
 
     mean = np.mean(result_arr, axis = 0)
@@ -36,7 +37,7 @@ def GiveTTestResult(st1, st2):
     stlis = file_ob.readlines()
     stlis = [item.rstrip().split(' ') for item in stlis]
     # print(len(stlis))
-    stlis = random.sample(stlis, 15)
+    stlis = random.sample(stlis, 50)
     result_lis = [[float(item[1]), float(item[2])] for item in stlis]
     result_arr1 = np.array(result_lis)
 
@@ -44,7 +45,7 @@ def GiveTTestResult(st1, st2):
     stlis = file_ob.readlines()
     stlis = [item.rstrip().split(' ') for item in stlis]
     # print(len(stlis))
-    stlis = random.sample(stlis, 15)
+    #stlis = random.sample(stlis, 15)
     result_lis = [[float(item[1]), float(item[2])] for item in stlis]
     result_arr2 = np.array(result_lis)
 
@@ -57,6 +58,8 @@ def GiveTTestResult(st1, st2):
     return t_val, p_val
 
 
-print(GetResult("single_log_without_bp_80.txt"))
+print(GetResult("mega_perc.txt"))
+print(GetResult("mega_tar.txt"))
+print(GiveTTestResult("mega_perc.txt", "mega_tar.txt"))
 #print(GiveTTestResult("single_log_without_bp.txt", "single_log_with_bp_without_clustring1_80.txt"))
 

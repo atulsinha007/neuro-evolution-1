@@ -9,4 +9,4 @@ else
 	exit
 fi
 
-screen  -dm -S forgit bash -c 'python3 main.py $1; exec bash'
+screen  -dm -S forgit bash -c "python3 main_tar.py $1; exec bash"

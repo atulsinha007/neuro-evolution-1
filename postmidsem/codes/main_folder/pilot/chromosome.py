@@ -355,7 +355,7 @@ class Chromosome:
             self.edge_mutation(inputdim, outputdim, rng)
             flag = 1
         elif prnd < rate_conn_weight:
-            self.weight_mutation(rng, weight_factor)
+            self.weight_mutation(rng, weight_factor, individual_change_probablity=0.1)
             flag = 1
         """if flag:
             print("before mutation length", p)
