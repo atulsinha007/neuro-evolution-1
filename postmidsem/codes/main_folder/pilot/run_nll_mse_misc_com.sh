@@ -11,5 +11,5 @@ fi
 
 for (( i=1; i <= $1; ++i ))
 do
-  screen  -dm -S forgit bash -c 'python3.5 main1_nll_mse_misc_com.py; exec bash'
+  screen  -dm -S forgit bash -c 'python3 main1_nll_mse_misc_com.py; exec bash'
 done
