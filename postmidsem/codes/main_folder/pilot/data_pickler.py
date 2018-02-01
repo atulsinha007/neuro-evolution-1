@@ -10,7 +10,7 @@ import pickle
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 pstri = './'
-fstri = '/home/placements2018/Dataset3/'
+fstri = '/home/placements2018/forgit/neuro-evolution/Dataset3/'
 dir_lis_src = ['010.beer-mug', '043.coin', '004.baseball-bat', '156.paper-shredder']
 dir_lis_tar = ['041.coffee-mug', '033.cd', '234.tweezer', '021.breadmaker']
 ctr = 0
