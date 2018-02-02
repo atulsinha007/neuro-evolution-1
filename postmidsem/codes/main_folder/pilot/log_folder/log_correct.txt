@@ -1,0 +1,26 @@
+
+
+correct 1.0
+correct 0.0
+correct 3.0
+correct 3.0
+correct 2.0
+correct 1.0
+correct 1.0
+correct 0.0
+correct 1.0
+correct 1.0
+correct 2.0
+correct 2.0
+correct 0.0
+correct 2.0
+
+
+
+correct 0.0
+correct 1.0
+correct 2.0
+correct 3.0
+correct 3.0
+correct 2.0
+
